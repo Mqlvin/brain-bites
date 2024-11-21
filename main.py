@@ -1,8 +1,12 @@
 from dotenv import load_dotenv
+import os
 from video.download import download_video
 
 load_dotenv()
-env_config = dotenv_values(".env")
+openai_key = os.getenv("OPENAI_KEY")
+
+
+
 
 if __name__ == '__main__':
     download_video("https://www.youtube.com/watch?v=SHZAaGidUbg")
