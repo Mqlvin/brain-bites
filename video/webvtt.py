@@ -149,7 +149,7 @@ class WebVTT:
             if not cue.has_words():
                 # If the cue is not made of single words, ignore it
                 continue
-            for word in cue.iter_words():
+            for word, timestamp in cue.iter_timed_words():
                 if word == previous_word:
                     # Sometimes a word is repeated so it stays on screen, ignore these duplicates
                     previous_word = ""
@@ -159,6 +159,14 @@ class WebVTT:
                 buffer_word = word
             previous_word = buffer_word
             self.__transcript += "\n"
+
+    def iter_words(self):
+        for cue in self.__cues:
+            for word, timestamp in cue.iter_timed_words():
+                yield word, timestamp
+
+    def get_transcript(self):
+        return self.__transcript
 
 class WebVTTCue:
     @staticmethod
@@ -233,9 +241,14 @@ class WebVTTCue:
 
     def iter_words(self):
         # Get all the cues that are a single word long
+        for cue, timestamp in self.iter_timed_words():
+            yield cue
+
+    def iter_timed_words(self):
+        # Get each cue that has only one word, and return the cue and timestamp
         for cue, timestamp in self.__cues:
             if WebVTTCue.num_words(cue) == 1:
-                yield cue
+                yield cue, timestamp
 
     def get_start_time(self):
         return self.__start_time
