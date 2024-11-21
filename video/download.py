@@ -1,16 +1,16 @@
 import os
 import subprocess
 
-# Note to future selves and repo dwellers that we tried our best to use the yt-dlp library and it just doesn't work. don't waste time on it again :)
+# Note to future selves and repo dwellers that we tried our best to use the yt-dlp library and it just didn't work.
 
-# I have no idea
-def download_video(video_url):
-    # bit scrappy can convert this to parameter later
-    try:
-        os.makedirs("./runtime", exist_ok=True)
-    except:
-        print("[ERROR] Failed to make runtime directory")
+# Downloads the transcript (overwrite = False means it'll used the cached file)
+def download_transcript(video_url, runtime_directory, overwrite = False):
 
+    # TODO: Right now it assumes format https://youtube.com/watch?v=xxxxxxxxxxx
+    video_id = video_url[len(video_url) - 11:]
+    if os.path.exists(runtime_directory + "/" + video_id + ".en.vtt"):
+        print("[INFO] File already downloaded, skipping download...")
+        return
 
     args = [
         "yt-dlp",
@@ -19,7 +19,7 @@ def download_video(video_url):
         "--sub-lang", "en",
         "--sub-format", "webvtt",
         "--skip-download",
-        "--output", "./runtime/%(id)s-transcript.%(ext)s",
+        "--output", runtime_directory + "/%(id)s.%(ext)s",
         video_url
     ]
 
