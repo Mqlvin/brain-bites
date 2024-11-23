@@ -5,6 +5,8 @@ from video.download import download_transcript
 from video.webvtt import WebVTT
 from api.openai_client import OpenAIWrapper, OpenAIModel
 
+runtime_dir = ""
+
 # loads and handles init of environment variables
 def init_env():
     # Loads the dotenv file
@@ -16,10 +18,7 @@ def init_env():
         print("[ERROR] No OpenAI key provided. Check https://github.com/Mqlvin/brain-bites/ for usage instructions.")
         exit(1)
     
-    runtime_dir = os.getenv("RUNTIME_DIR")
-    if not runtime_dir:
-        runtime_dir = "./runtime"
-    
+    runtime_dir = os.getenv("RUNTIME_DIR", "./runtime")
     # make the directory
     try:
         os.makedirs(runtime_dir, exist_ok=True)
