@@ -6,7 +6,7 @@ Shorten long documentaries 📽️ into short, education-packed videos ⚡.
 To run the project, you will need the `openai` and `dotenv` Python libraries.<br>
 You can either `pip install` them, or can install them otherwise appropriate to your operating system.<br>
 <br>
-You will also need `yt-dlp` available on your system's PATH, so it is executable from the terminal.<br>
+You will also need `yt-dlp`, `ffplay` and `ffmpeg` available on your system's PATH, so it is executable from the terminal.<br>
 <br>
 The project will require an environment variable keystore (`.env` file) with the following keys:
 - `OPENAI_KEY` - Your OpenAI API key.
