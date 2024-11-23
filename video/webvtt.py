@@ -147,18 +147,19 @@ class WebVTT:
         previous_word = ""
         for cue in self.__cues:
             if not cue.has_words():
-                # If the cue is not made of single words, ignore it
                 continue
-            for word, timestamp in cue.iter_timed_words():
+            for word, timestamp in cue.iter_untimed_words():
                 if word == previous_word:
                     # Sometimes a word is repeated so it stays on screen, ignore these duplicates
-                    previous_word = ""
+                    pass#previous_word = ""
                 else:
-                    self.__transcript += word
+                    space = ""
+                    if word[-1] != " ":
+                        space = " "
+                    self.__transcript += word + space
                 # Buffer word keeps track of the last word
                 buffer_word = word
             previous_word = buffer_word
-            self.__transcript += "\n"
 
     def iter_words(self):
         for cue in self.__cues:
@@ -189,6 +190,7 @@ class WebVTTCue:
         self.__start_time = None
         self.__end_time = None
         self.__cues = []
+        self.__cue_marks = []
         self.__settings = {}
 
         count = 0
@@ -214,18 +216,29 @@ class WebVTTCue:
 
     def __parse_cue(self, line):
         timestamp = self.__start_time
+        num_tags = 0
+        indices = []
         for tag, tag_depth in WebVTTUtil.iter_tags(line):
             if tag_depth == 1:
                 # Inside a tag such as <c> </c>
                 if WebVTTTiming.is_timestamp(tag):
                     timestamp = WebVTTTiming(tag)
+                num_tags += 1
             elif tag_depth == 0:
                 # Outside a tag, reading the actual text
                 if not WebVTTUtil.is_whitespace(tag):
-                    self.__append_cue(tag, timestamp)
+                    indices.append(self.__append_cue(tag, timestamp))
+        if num_tags > 0:
+            for index in indices:
+                self.__mark_cue(index)
 
     def __append_cue(self, cue, timestamp):
+        index = len(self.__cues)
         self.__cues.append((cue, timestamp))
+        return index
+
+    def __mark_cue(self, index):
+        self.__cue_marks.append(index)
 
     def add_block(self, block):
         # Add additional data to an existing, timestamped cue
@@ -249,6 +262,12 @@ class WebVTTCue:
         for cue, timestamp in self.__cues:
             if WebVTTCue.num_words(cue) == 1:
                 yield cue, timestamp
+
+    def iter_untimed_words(self):
+        # Get each line that does not have timestamp tags in it
+        for index, cue in enumerate(self.__cues):
+            if index not in self.__cue_marks:
+                yield cue
 
     def get_start_time(self):
         return self.__start_time
