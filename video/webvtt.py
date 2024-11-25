@@ -106,9 +106,11 @@ class WebVTTTiming:
 
 class WebVTT:
     def __init__(self, file_path):
-        self.__header = {}
-        self.__cues = []
+        self.__header = dict()
+        self.__cues = list()
         self.__transcript = ""
+        self.__num_words = 0
+        self.__word_tracker = dict()
 
         with open(file_path) as file:
             file_data = file.read()
@@ -146,17 +148,17 @@ class WebVTT:
         buffer_word = ""
         previous_word = ""
         for cue in self.__cues:
-            if not cue.has_words():
-                continue
-            for word, timestamp in cue.iter_untimed_words():
+            #if cue.has_words():
+            #    continue
+            for word, timestamp in cue.iter_timed_words():
+                word = word.strip()
                 if word == previous_word:
                     # Sometimes a word is repeated so it stays on screen, ignore these duplicates
-                    pass#previous_word = ""
+                    previous_word = ""
                 else:
-                    space = ""
-                    if word[-1] != " ":
-                        space = " "
-                    self.__transcript += word + space
+                    self.__transcript += word + " "
+                    self.__word_tracker[self.__num_words] = cue
+                    self.__num_words += 1
                 # Buffer word keeps track of the last word
                 buffer_word = word
             previous_word = buffer_word
@@ -168,6 +170,18 @@ class WebVTT:
 
     def get_transcript(self):
         return self.__transcript
+
+    def get_time_of_word(self, word_index):
+        prev_key = 0
+        for key in sorted(self.__word_tracker.keys()):
+            if key >= word_index:
+                return self.__word_tracker[prev_key].get_start_time(), self.__word_tracker[prev_key].get_end_time()
+            prev_key = key
+
+    def get_time_of_phrase(self, start_index, end_index):
+        start_time, _ = self.get_time_of_word(start_index)
+        _, end_time = self.get_time_of_word(end_index)
+        return start_time, end_time
 
 class WebVTTCue:
     @staticmethod
@@ -245,6 +259,12 @@ class WebVTTCue:
         for line in block.split(os.linesep):
             self.__parse_cue(line)
 
+    def has_single_words(self):
+        for cue, timestamp in self.__cues:
+            if WebVTTCue.num_words(cue) > 1 and not WebVTTUtil.is_whitespace(cue):
+                return False
+        return True
+
     def has_words(self):
         # Return True if there are words in the cue
         for cue, timestamp in self.__cues:
@@ -271,6 +291,9 @@ class WebVTTCue:
 
     def get_start_time(self):
         return self.__start_time
+
+    def get_end_time(self):
+        return self.__end_time
 
     def __repr__(self):
         if len(self.__cues) > 0:
