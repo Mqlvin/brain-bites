@@ -49,6 +49,8 @@ def trim_video(input_path: str, output_path: str, cut_segments: list[(float, flo
         filters += f"[0:a]atrim=start={tup[0]}:end={tup[1]},asetpts=PTS-STARTPTS[{trims}a];"
         trims += 1
 
+    print(filters)
+
     for i in range(trims):
         filters += f"[{i}v][{i}a]"
 
@@ -59,7 +61,7 @@ def trim_video(input_path: str, output_path: str, cut_segments: list[(float, flo
     args.extend(["-map", "[outv]", "-map", "[outa]"])
     args.append(output_path)
 
-    # uncomment to view command.. 
+    # uncomment to view command..
     print(" ".join(args))
     subprocess.run(args)
 

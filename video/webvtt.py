@@ -158,7 +158,7 @@ class WebVTT:
                     previous_word = ""
                 else:
                     self.__transcript += word + " "
-                    self.__word_tracker[self.__num_words] = cue
+                    self.__word_tracker[self.__num_words] = timestamp
                     self.__num_words += 1
                 # Buffer word keeps track of the last word
                 buffer_word = word
@@ -176,7 +176,7 @@ class WebVTT:
         prev_key = 0
         for key in sorted(self.__word_tracker.keys()):
             if key >= word_index:
-                return self.__word_tracker[prev_key].get_start_time(), self.__word_tracker[prev_key].get_end_time()
+                return self.__word_tracker[prev_key], self.__word_tracker[key]
             prev_key = key
 
     def get_time_of_phrase(self, start_index, end_index):
