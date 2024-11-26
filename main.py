@@ -6,7 +6,7 @@ from api.openai_client import OpenAIModel, OpenAIWrapper, unwrap_response
 from process.ffmpeg_api import trim_video
 from process.match import find_subtext
 from video.download import download_transcript
-from video.webvtt import WebVTT
+from video.webvtt import WebVTT, WebVTTUtil
 
 runtime_dir = ""
 
@@ -55,6 +55,8 @@ def main():
     webvtt = WebVTT(runtime_dir + "/SHZAaGidUbg.en.vtt")
     transcript = webvtt.get_transcript()
 
+    print(transcript)
+
     summary = summarise_transcript(openai_client, webvtt)
 
     # Probably gonna have an error like None has no attribute blah blah but who rlly cares
@@ -62,6 +64,8 @@ def main():
     times_to_keep = []
 
     for line in summary.split("\n"):
+        if WebVTTUtil.is_whitespace(line):
+            continue
         start_index, end_index = find_subtext(transcript, line)
         start_time, end_time = webvtt.get_time_of_phrase(start_index, end_index)
         print(f"{line}: {start_time} --> {end_time}")
