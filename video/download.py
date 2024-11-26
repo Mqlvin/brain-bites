@@ -8,18 +8,32 @@ def download_transcript(video_url, runtime_directory, overwrite = False):
 
     # TODO: Right now it assumes format https://youtube.com/watch?v=xxxxxxxxxxx
     video_id = video_url[len(video_url) - 11:]
-    if os.path.exists(runtime_directory + "/" + video_id + ".en.vtt") and not overwrite:
-        print("[INFO] File already downloaded, skipping download...")
-        return
+    subtitle_downloaded = os.path.exists(runtime_directory + "/" + video_id + ".en.vtt")
+    video_downloaded = os.path.exists(runtime_directory + "/" + video_id + ".mp4")
 
     args = [
         "yt-dlp",
-        "--write-auto-subs",
-        "--sub-lang", "en",
-        "--sub-format", "webvtt",
-        "--skip-download",
         "--output", runtime_directory + "/%(id)s.%(ext)s",
-        video_url
     ]
 
+
+    if not video_downloaded or overwrite:
+        args.append("-f 137+140")
+    else:
+        args.append("--skip-download")
+        print("[info] video already downloaded, skipping downloading")
+
+    if not subtitle_downloaded or overwrite:
+        args.append("--write-auto-subs")
+        args.append("--sub-lang")
+        args.append("en")
+        args.append("--sub-format")
+        args.append("webvtt")
+    else:
+        print("[info] subtitles already downloaded, skipping download")
+
+    if subtitle_downloaded and video_downloaded and not overwrite:
+        return
+
+    args.append(video_url)
     subprocess.run(args)
