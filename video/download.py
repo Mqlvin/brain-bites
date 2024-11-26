@@ -15,9 +15,9 @@ def download_transcript(video_url, runtime_directory, overwrite = False):
     args = [
         "yt-dlp",
         "--write-auto-subs",
+        "-f 137+140",
         "--sub-lang", "en",
         "--sub-format", "webvtt",
-        "--skip-download",
         "--output", runtime_directory + "/%(id)s.%(ext)s",
         video_url
     ]
