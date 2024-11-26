@@ -1,5 +1,6 @@
 import os
 
+
 class WebVTTUtil:
     @staticmethod
     def is_whitespace(string):

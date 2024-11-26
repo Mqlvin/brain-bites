@@ -1,5 +1,5 @@
-import subprocess
 import json
+import subprocess
 
 
 # ffmpeg trim function keeps the segments you provide it to trim (basically the opposite you'd expect)
@@ -39,7 +39,7 @@ def trim_video(input_path: str, output_path: str, cut_segments: list[(float, flo
         "-filter_complex", # now generate cut arguments...
     ]
 
-    keep_segments = _invert_segments(cut_segments, _ffprobe_video_length(input_path))
+    keep_segments = cut_segments # _invert_segments(cut_segments, _ffprobe_video_length(input_path))
 
     # appends specific trim arguments to arguments (one for audio one for video)
     trims = 0
@@ -59,7 +59,8 @@ def trim_video(input_path: str, output_path: str, cut_segments: list[(float, flo
     args.extend(["-map", "[outv]", "-map", "[outa]"])
     args.append(output_path)
 
-    # uncomment to view command.. print(" ".join(args))
+    # uncomment to view command.. 
+    print(" ".join(args))
     subprocess.run(args)
 
 

@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 
 from api.openai_client import OpenAIModel, OpenAIWrapper, unwrap_response
+from process.ffmpeg_api import trim_video
 from process.match import find_subtext
 from video.download import download_transcript
 from video.webvtt import WebVTT
@@ -61,10 +62,17 @@ def main():
 
     # Probably gonna have an error like None has no attribute blah blah but who rlly cares
 
+    times_to_keep = []
+
     for line in summary.split("\n"):
         start_index, end_index = find_subtext(transcript, line)
         start_time, end_time = webvtt.get_time_of_phrase(start_index, end_index)
         print(f"{line}: {start_time} --> {end_time}")
+
+        times_to_keep.append((start_time.seconds(), end_time.seconds()))
+
+    trim_video("./runtime/SHZAaGidUbg.mp4", "out.mp4", times_to_keep)
+
 
 if __name__ == '__main__':
      main()
