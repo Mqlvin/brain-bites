@@ -10,7 +10,6 @@ from video.webvtt import WebVTT
 
 runtime_dir = ""
 
-
 # loads and handles init of environment variables
 def init_env():
     global runtime_dir
@@ -51,8 +50,6 @@ def main():
     # Singleton openai client, I'm sticking to gpt 4o mini for testing
     openai_client = OpenAIWrapper(os.getenv("OPENAI_KEY"), OpenAIModel.GPT_4O_MINI)
 
-    runtime_dir = "runtime"
-
     # download transcript and deserialize into WebVTT object
     download_transcript("https://www.youtube.com/watch?v=SHZAaGidUbg", runtime_dir)
     webvtt = WebVTT(runtime_dir + "/SHZAaGidUbg.en.vtt")
@@ -68,10 +65,9 @@ def main():
         start_index, end_index = find_subtext(transcript, line)
         start_time, end_time = webvtt.get_time_of_phrase(start_index, end_index)
         print(f"{line}: {start_time} --> {end_time}")
-
         times_to_keep.append((start_time.seconds(), end_time.seconds()))
 
-    trim_video("./runtime/SHZAaGidUbg.mp4", "out.mp4", times_to_keep)
+    trim_video("./runtime/SHZAaGidUbg.mp4", "SHZAaGidUbg.mp4", times_to_keep)
 
 
 if __name__ == '__main__':
