@@ -1,16 +1,18 @@
-from dotenv import load_dotenv
 import os
 
+from dotenv import load_dotenv
+
+from api.openai_client import OpenAIModel, OpenAIWrapper, unwrap_response
 from process.match import find_subtext
 from video.download import download_transcript
 from video.webvtt import WebVTT
-from api.openai_client import OpenAIWrapper, OpenAIModel, unwrap_response
 
 runtime_dir = ""
 
 
 # loads and handles init of environment variables
 def init_env():
+    global runtime_dir
     # Loads the dotenv file
     load_dotenv()
 
@@ -52,7 +54,7 @@ def main():
 
     # download transcript and deserialize into WebVTT object
     download_transcript("https://www.youtube.com/watch?v=SHZAaGidUbg", runtime_dir)
-    webvtt = WebVTT(runtime_dir + "/idk.en.vtt")
+    webvtt = WebVTT(runtime_dir + "/SHZAaGidUbg.en.vtt")
     transcript = webvtt.get_transcript()
 
     summary = summarise_transcript(openai_client, webvtt)
