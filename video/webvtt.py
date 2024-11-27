@@ -1,5 +1,6 @@
 import os
 
+
 class WebVTTUtil:
     @staticmethod
     def is_whitespace(string):
@@ -106,9 +107,11 @@ class WebVTTTiming:
 
 class WebVTT:
     def __init__(self, file_path):
-        self.__header = {}
-        self.__cues = []
+        self.__header = dict()
+        self.__cues = list()
         self.__transcript = ""
+        self.__num_words = 0
+        self.__word_tracker = dict()
 
         with open(file_path) as file:
             file_data = file.read()
@@ -146,19 +149,40 @@ class WebVTT:
         buffer_word = ""
         previous_word = ""
         for cue in self.__cues:
-            if not cue.has_words():
-                # If the cue is not made of single words, ignore it
-                continue
-            for word in cue.iter_words():
+            #if cue.has_words():
+            #    continue
+            for word, timestamp in cue.iter_timed_words():
+                word = word.strip()
                 if word == previous_word:
                     # Sometimes a word is repeated so it stays on screen, ignore these duplicates
                     previous_word = ""
                 else:
-                    self.__transcript += word
+                    self.__transcript += word + " "
+                    self.__word_tracker[self.__num_words] = timestamp
+                    self.__num_words += 1
                 # Buffer word keeps track of the last word
                 buffer_word = word
             previous_word = buffer_word
-            self.__transcript += "\n"
+
+    def iter_words(self):
+        for cue in self.__cues:
+            for word, timestamp in cue.iter_timed_words():
+                yield word, timestamp
+
+    def get_transcript(self):
+        return self.__transcript
+
+    def get_time_of_word(self, word_index):
+        prev_key = 0
+        for key in sorted(self.__word_tracker.keys()):
+            if key >= word_index:
+                return self.__word_tracker[prev_key], self.__word_tracker[key]
+            prev_key = key
+
+    def get_time_of_phrase(self, start_index, end_index):
+        start_time, _ = self.get_time_of_word(start_index)
+        _, end_time = self.get_time_of_word(end_index)
+        return start_time, end_time
 
 class WebVTTCue:
     @staticmethod
@@ -181,6 +205,7 @@ class WebVTTCue:
         self.__start_time = None
         self.__end_time = None
         self.__cues = []
+        self.__cue_marks = []
         self.__settings = {}
 
         count = 0
@@ -206,23 +231,40 @@ class WebVTTCue:
 
     def __parse_cue(self, line):
         timestamp = self.__start_time
+        num_tags = 0
+        indices = []
         for tag, tag_depth in WebVTTUtil.iter_tags(line):
             if tag_depth == 1:
                 # Inside a tag such as <c> </c>
                 if WebVTTTiming.is_timestamp(tag):
                     timestamp = WebVTTTiming(tag)
+                num_tags += 1
             elif tag_depth == 0:
                 # Outside a tag, reading the actual text
                 if not WebVTTUtil.is_whitespace(tag):
-                    self.__append_cue(tag, timestamp)
+                    indices.append(self.__append_cue(tag, timestamp))
+        if num_tags > 0:
+            for index in indices:
+                self.__mark_cue(index)
 
     def __append_cue(self, cue, timestamp):
+        index = len(self.__cues)
         self.__cues.append((cue, timestamp))
+        return index
+
+    def __mark_cue(self, index):
+        self.__cue_marks.append(index)
 
     def add_block(self, block):
         # Add additional data to an existing, timestamped cue
         for line in block.split(os.linesep):
             self.__parse_cue(line)
+
+    def has_single_words(self):
+        for cue, timestamp in self.__cues:
+            if WebVTTCue.num_words(cue) > 1 and not WebVTTUtil.is_whitespace(cue):
+                return False
+        return True
 
     def has_words(self):
         # Return True if there are words in the cue
@@ -233,12 +275,26 @@ class WebVTTCue:
 
     def iter_words(self):
         # Get all the cues that are a single word long
+        for cue, timestamp in self.iter_timed_words():
+            yield cue
+
+    def iter_timed_words(self):
+        # Get each cue that has only one word, and return the cue and timestamp
         for cue, timestamp in self.__cues:
             if WebVTTCue.num_words(cue) == 1:
+                yield cue, timestamp
+
+    def iter_untimed_words(self):
+        # Get each line that does not have timestamp tags in it
+        for index, cue in enumerate(self.__cues):
+            if index not in self.__cue_marks:
                 yield cue
 
     def get_start_time(self):
         return self.__start_time
+
+    def get_end_time(self):
+        return self.__end_time
 
     def __repr__(self):
         if len(self.__cues) > 0:

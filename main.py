@@ -1,14 +1,18 @@
-from dotenv import load_dotenv
 import os
 
+from dotenv import load_dotenv
+
+from api.openai_client import OpenAIModel, OpenAIWrapper, unwrap_response
+from process.ffmpeg_api import trim_video
+from process.match import find_subtext
 from video.download import download_transcript
-from video.webvtt import WebVTT
-from api.openai_client import OpenAIWrapper, OpenAIModel
+from video.webvtt import WebVTT, WebVTTUtil
 
 runtime_dir = ""
 
 # loads and handles init of environment variables
 def init_env():
+    global runtime_dir
     # Loads the dotenv file
     load_dotenv()
 
@@ -17,7 +21,7 @@ def init_env():
     if not openai_key:
         print("[ERROR] No OpenAI key provided. Check https://github.com/Mqlvin/brain-bites/ for usage instructions.")
         exit(1)
-    
+
     runtime_dir = os.getenv("RUNTIME_DIR", "./runtime")
     # make the directory
     try:
@@ -25,9 +29,21 @@ def init_env():
     except:
         print("[ERROR] Failed to make runtime directory")
 
+def summarise_transcript(client, transcript):
+    chat_completion = client.get_client().chat.completions.create(
+        model=client.get_active_model(),
+        messages=[
+            {"role": "system",
+             "content": "You are designed to summarise educational transcripts. But you MUST still use their wording. Give me each summarised sentence on a new line."},
+            {"role": "user",
+             "content": transcript.get_transcript()}
+        ]
+    )
+
+    return unwrap_response(chat_completion)
 
 
-if __name__ == '__main__':
+def main():
     # Init environment variables
     init_env()
 
@@ -36,4 +52,27 @@ if __name__ == '__main__':
 
     # download transcript and deserialize into WebVTT object
     download_transcript("https://www.youtube.com/watch?v=SHZAaGidUbg", runtime_dir)
-    transcript = WebVTT(runtime_dir + "/SHZAaGidUbg.en.vtt")
+    webvtt = WebVTT(runtime_dir + "/SHZAaGidUbg.en.vtt")
+    transcript = webvtt.get_transcript()
+
+    print(transcript)
+
+    summary = summarise_transcript(openai_client, webvtt)
+
+    # Probably gonna have an error like None has no attribute blah blah but who rlly cares
+
+    times_to_keep = []
+
+    for line in summary.split("\n"):
+        if WebVTTUtil.is_whitespace(line):
+            continue
+        start_index, end_index = find_subtext(transcript, line)
+        start_time, end_time = webvtt.get_time_of_phrase(start_index, end_index)
+        print(f"{line}: {start_time} --> {end_time}")
+        times_to_keep.append((start_time.seconds(), end_time.seconds()))
+
+    trim_video("./runtime/SHZAaGidUbg.mp4", "SHZAaGidUbg.mp4", times_to_keep)
+
+
+if __name__ == '__main__':
+     main()
