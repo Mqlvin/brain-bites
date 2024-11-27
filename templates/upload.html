@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Brain Bites</title>
+</head>
+<body>
+<form action="" method="POST" novalidate>
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.youtube_url.label }} <br>
+    {{ form.youtube_url(size=40) }}
+  </p>
+</form>
+</body>
+</html>
