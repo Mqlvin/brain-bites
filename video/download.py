@@ -8,12 +8,18 @@ def download_transcript(video_url, runtime_directory, overwrite = False):
 
     # TODO: Right now it assumes format https://youtube.com/watch?v=xxxxxxxxxxx
     video_id = video_url[len(video_url) - 11:]
-    subtitle_downloaded = os.path.exists(runtime_directory + "/" + video_id + ".en.vtt")
-    video_downloaded = os.path.exists(runtime_directory + "/" + video_id + ".mp4")
+
+    directory = f"{runtime_directory}/{video_id}"
+
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    subtitle_downloaded = os.path.exists(directory + f"/{video_id}.en.vtt")
+    video_downloaded = os.path.exists(directory + f"/{video_id}.mp4")
 
     args = [
         "yt-dlp",
-        "--output", runtime_directory + "/%(id)s.%(ext)s",
+        "--output", directory + "/%(id)s.%(ext)s",
     ]
 
 
