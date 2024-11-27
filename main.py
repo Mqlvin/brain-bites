@@ -1,22 +1,21 @@
 import os
-from dotenv import load_dotenv
-from flask import Flask, render_template, redirect, send_file
-from flask_app.config import Config
-from flask_app.forms import UploadForm
-from dotenv import load_dotenv
 from threading import Thread
 
+from dotenv import load_dotenv
+from flask import Flask, redirect, render_template, send_file
+
 from api.openai_client import OpenAIModel, OpenAIWrapper, unwrap_response
+from flask_app.config import Config
+from flask_app.forms import UploadForm
 from process.ffmpeg_api import trim_video
 from process.match import find_subtext
+from process.upload import get_youtube_id, upload_video
 from video.download import download_transcript
 from video.webvtt import WebVTT, WebVTTUtil
-from process.upload import upload_video, get_youtube_id
-
 
 runtime_dir = ""
 openai_client = None
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder="./templates/static")
 
 # loads and handles init of environment variables
 def init_env():
@@ -75,6 +74,7 @@ def init_env():
 
       
 
+
 @app.route("/")
 @app.route("/index")
 def index():
@@ -104,14 +104,11 @@ def upload():
 
     return render_template('upload.html', form=form)
 
-
-
-if __name__ == '__main__':
-     main()
-
 @app.route("/upload-complete")
 def upload_complete():
     return render_template("upload-complete.html")
+
+
 
 if __name__ == '__main__':
     init_env()
@@ -120,29 +117,32 @@ if __name__ == '__main__':
     openai_client = OpenAIWrapper(os.getenv("OPENAI_KEY"), OpenAIModel.GPT_4O_MINI)
 
     # download transcript and deserialize into WebVTT object
-    download_transcript("https://www.youtube.com/watch?v=SHZAaGidUbg", runtime_dir)
-    webvtt = WebVTT(runtime_dir + "/SHZAaGidUbg.en.vtt")
-    transcript = webvtt.get_transcript()
+    # download_transcript("https://www.youtube.com/watch?v=SHZAaGidUbg", runtime_dir)
+    # webvtt = WebVTT(runtime_dir + "/SHZAaGidUbg/SHZAaGidUbg.en.vtt")
+    # transcript = webvtt.get_transcript()
 
-    print(transcript)
+    # print(transcript)
 
-    summary = summarise_transcript(openai_client, webvtt)
+    # summary = summarise_transcript(openai_client, webvtt)
 
     # Probably gonna have an error like None has no attribute blah blah but who rlly cares
 
-    times_to_keep = []
+    # times_to_keep = []
 
-    for line in summary.split("\n"):
-        if WebVTTUtil.is_whitespace(line):
-            continue
-        start_index, end_index = find_subtext(transcript, line)
-        start_time, end_time = webvtt.get_time_of_phrase(start_index, end_index)
-        print(f"{line}: {start_time} --> {end_time}")
-        times_to_keep.append((start_time.seconds(), end_time.seconds()))
+    # for line in summary.split("\n"):
+    #     if WebVTTUtil.is_whitespace(line):
+    #         continue
+    #     start_index, end_index = find_subtext(transcript, line)
+    #     start_time, end_time = webvtt.get_time_of_phrase(start_index, end_index)
+    #     print(f"{line}: {start_time} --> {end_time}")
+    #     times_to_keep.append((start_time.seconds(), end_time.seconds()))
 
-    trim_video("./runtime/SHZAaGidUbg.mp4", "SHZAaGidUbg.mp4", times_to_keep)
+    # trim_video("./runtime/SHZAaGidUbg/SHZAaGidUbg.mp4", "SHZAaGidUbg.mp4", times_to_keep)
 
 
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
     app.run()
 
+
+if __name__ == '__main__':
+     main()
