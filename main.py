@@ -104,11 +104,6 @@ def upload():
 
     return render_template('upload.html', form=form)
 
-
-
-if __name__ == '__main__':
-     main()
-
 @app.route("/upload-complete")
 def upload_complete():
     return render_template("upload-complete.html")
@@ -120,27 +115,27 @@ if __name__ == '__main__':
     openai_client = OpenAIWrapper(os.getenv("OPENAI_KEY"), OpenAIModel.GPT_4O_MINI)
 
     # download transcript and deserialize into WebVTT object
-    download_transcript("https://www.youtube.com/watch?v=SHZAaGidUbg", runtime_dir)
-    webvtt = WebVTT(runtime_dir + "/SHZAaGidUbg.en.vtt")
-    transcript = webvtt.get_transcript()
+    # download_transcript("https://www.youtube.com/watch?v=SHZAaGidUbg", runtime_dir)
+    # webvtt = WebVTT(runtime_dir + "/SHZAaGidUbg.en.vtt")
+    # transcript = webvtt.get_transcript()
 
-    print(transcript)
+    #print(transcript)
 
-    summary = summarise_transcript(openai_client, webvtt)
+    #summary = summarise_transcript(openai_client, webvtt)
 
     # Probably gonna have an error like None has no attribute blah blah but who rlly cares
 
-    times_to_keep = []
+    #times_to_keep = []
 
-    for line in summary.split("\n"):
-        if WebVTTUtil.is_whitespace(line):
-            continue
-        start_index, end_index = find_subtext(transcript, line)
-        start_time, end_time = webvtt.get_time_of_phrase(start_index, end_index)
-        print(f"{line}: {start_time} --> {end_time}")
-        times_to_keep.append((start_time.seconds(), end_time.seconds()))
-
-    trim_video("./runtime/SHZAaGidUbg.mp4", "SHZAaGidUbg.mp4", times_to_keep)
+    # for line in summary.split("\n"):
+    #     if WebVTTUtil.is_whitespace(line):
+    #         continue
+    #     start_index, end_index = find_subtext(transcript, line)
+    #     start_time, end_time = webvtt.get_time_of_phrase(start_index, end_index)
+    #     print(f"{line}: {start_time} --> {end_time}")
+    #     times_to_keep.append((start_time.seconds(), end_time.seconds()))
+    #
+    # trim_video("./runtime/SHZAaGidUbg.mp4", "SHZAaGidUbg.mp4", times_to_keep)
 
 
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
