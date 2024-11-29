@@ -1,0 +1,130 @@
+* {
+    padding: 0;
+    margin: 0;
+
+    font-family: "Mona Sans", serif;
+}
+
+body {
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+}
+
+
+
+.content-container {
+    margin-top: calc(50vh - 18vw);
+
+    width: 64vw;
+    height: 36vw;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    background-color: rgb(230, 230, 230);
+    border: 1px solid #DEDEDE;
+
+    border-radius: 10px;
+    box-shadow: 0px 8px 22px 0px rgba(0,0,0,0.65);
+
+    overflow: hidden;
+}
+
+.video-block {
+    width: 64vw;
+    height: 36vw;
+}
+
+.button {
+    width: 54px;
+    height: 54px;
+
+    border-radius: 100px;
+    box-shadow: 0px 6px 18px -4px rgba(0,0,0,0.45);
+
+    background-color: rgb(230, 230, 230);
+    border: 1px solid #DEDEDE;
+
+    margin-left: 20px;
+
+    transition: 0.1s;
+}
+
+.get-help {
+    background: linear-gradient(150deg, rgba(128,237,153,1) 10%, rgba(56,163,165,1) 100%) !important;
+}
+
+.quiz {
+    background: linear-gradient(150deg, rgba(128,237,153,1) 10%, rgba(56,163,165,1) 100%) !important;
+}
+
+#svg {
+    pointer-events: none;
+}
+
+.button:hover {
+    filter: brightness(92%);
+    cursor: pointer;
+}
+
+.scrollable-content {
+    width: 100vw;
+    overflow: hidden;
+}
+
+.chapter {
+    display: flex;
+
+    height: 100vh;
+    width: 100vw;
+
+    transition: 0.6s;
+    transition-timing-function: ease-in-out;
+}
+
+.chapter {
+    margin-top: 0vh;
+}
+
+.button-holder {
+    height: 36vw;
+    margin-bottom: calc(50vh - 18vw);
+    display: flex;
+    flex-direction: column;
+    align-self:flex-end;
+    justify-content: flex-end;
+}
+
+
+
+.intro-card {
+    width: 64vw;
+    height: 36vw;
+}
+
+.title-text {
+    color: rgb(50, 50, 50);
+    text-align: center;
+    text-shadow: 0px 0px 4px rgba(0,0,0,0.20);
+
+    margin-top: calc(16vw - 2em);
+    font-size: 2em;
+}
+
+.topic-text {
+    text-align: center;
+    margin-bottom: auto;
+    text-shadow: 0px 0px 5px rgba(255,255,255,0.20);
+
+    font-size: 5em;
+}
+
+.gradient-text {
+    color: transparent;
+    background-image: linear-gradient(150deg, rgba(128,237,153,1) 10%, rgba(56,163,165,1) 100%) !important;
+    background-clip: text;
+}
