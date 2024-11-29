@@ -1,6 +1,8 @@
-from enum import Enum
-from openai import OpenAI
 import json
+from enum import Enum
+
+from openai import OpenAI
+
 
 class OpenAIModel(Enum):
     GPT_4O = 0
@@ -60,3 +62,34 @@ chat_completion = client.get_client().chat.completions.create(
 
 print(unwrap_response(chat_completion))
 """
+
+
+# returns a summarised transcript
+def summarise_transcript(client, transcript):
+    chat_completion = client.get_client().chat.completions.create(
+        model=client.get_active_model(),
+        messages=[
+            {"role": "system",
+             "content": "You are designed to summarise educational transcripts. But you MUST still use their wording. Give me each summarised sentence on a different, and split into chapters of about five sentences long, titled as <Chapter 1>, <Chapter 2> and so on."},
+            {"role": "user",
+             "content": transcript.get_transcript()}
+        ]
+    )
+
+    return unwrap_response(chat_completion)
+
+
+
+# returns the topic of the video
+def summarise_to_topic(client, transcript):
+    chat_completion = client.get_client().chat.completions.create(
+        model=client.get_active_model(),
+        messages=[
+            {"role": "system",
+             "content": "Name this video, based on the transcript I give you. Finish the sentence 'Here is a brain bite on'...Just reply in 1-4 words"},
+            {"role": "user",
+             "content": transcript}
+        ]
+    )
+
+    return unwrap_response(chat_completion)[len("Here is a brain bite on "):].replace(".", "")
