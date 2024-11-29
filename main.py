@@ -86,11 +86,12 @@ def videos(video_id):
     if video_id not in os.listdir(runtime_dir):
         return "Could not find video!"
     else:
-        return render_template("player.html", video_path=f"/source/{video_id}/{video_id}.mp4")
+        chapter_count = len(list(filter(lambda x: x.startswith("chapter"), os.listdir(runtime_dir + "/" + video_id))))
+        return render_template("player.html", chapters = chapter_count, topic = "Airplane")
 
 @app.route("/source/<video_id>/<_>.mp4")
 def source(video_id, _):
-    return send_file(f"runtime/{video_id}/{video_id}.mp4")
+    return send_file(f"runtime/{video_id}/{_}.mp4")
 
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
@@ -110,37 +111,40 @@ def upload_complete():
 
 
 
-if __name__ == '__main__':
+def main():
     init_env()
 
-    # Singleton openai client, I'm sticking to gpt 4o mini for testing
-    openai_client = OpenAIWrapper(os.getenv("OPENAI_KEY"), OpenAIModel.GPT_4O_MINI)
+    youtube_id = "7rMgpExA4kM"
+    if not os.path.isdir(f"{runtime_dir}/{youtube_id}"):
 
-    # download transcript and deserialize into WebVTT object
-    # download_transcript("https://www.youtube.com/watch?v=SHZAaGidUbg", runtime_dir)
-    # webvtt = WebVTT(runtime_dir + "/SHZAaGidUbg/SHZAaGidUbg.en.vtt")
-    # transcript = webvtt.get_transcript()
-    # print(transcript)
-    # summary = summarise_transcript(openai_client, webvtt)
-    # Probably gonna have an error like None has no attribute blah blah but who rlly cares
-    # times_to_keep = []
+        # Singleton openai client, I'm sticking to gpt 4o mini for testing
+        # openai_client = OpenAIWrapper(os.getenv("OPENAI_KEY"), OpenAIModel.GPT_4O_MINI)
+    
+        # download transcript and deserialize into WebVTT object
+        # download_transcript("https://www.youtube.com/watch?v=" + youtube_id, runtime_dir)
+        # webvtt = WebVTT(runtime_dir + f"/{youtube_id}/{youtube_id}.en.vtt")
+        # transcript = webvtt.get_transcript()
+        # print(transcript)
+        # summary = summarise_transcript(openai_client, webvtt)
+        # Probably gonna have an error like None has no attribute blah blah but who rlly cares
+        # times_to_keep = []
 
 
-    # chapter = -1
-    # for line in summary.split("\n"):
-    #     if WebVTTUtil.is_whitespace(line):
-    #         continue
-    #     if "<" in line or ">" in line:
-    #         chapter += 1
-    #         times_to_keep.append(list())
-    #         continue
-    #     start_index, end_index = find_subtext(transcript, line)
-    #     start_time, end_time = webvtt.get_time_of_phrase(start_index, end_index)
-    #     print(f"{line}: {start_time} --> {end_time}")
-    #     times_to_keep[chapter].append((start_time.seconds(), end_time.seconds()))
-
-    # for chapter_id, chapter_times in enumerate(times_to_keep):
-    #     trim_video(f"{runtime_dir}/{youtube_id}/{youtube_id}.mp4", f"{chapter_id}.mp4", chapter_times)
+       # chapter = -1
+       # for line in summary.split("\n"):
+       #     if WebVTTUtil.is_whitespace(line):
+       #         continue
+       #     if "<" in line or ">" in line:
+       #         chapter += 1
+       #         times_to_keep.append(list())
+       #         continue
+       #     start_index, end_index = find_subtext(transcript, line)
+       #     start_time, end_time = webvtt.get_time_of_phrase(start_index, end_index)
+       #     print(f"{line}: {start_time} --> {end_time}")
+       #     times_to_keep[chapter].append((start_time.seconds(), end_time.seconds()))
+    
+       # for chapter_id, chapter_times in enumerate(times_to_keep):
+            trim_video(f"{runtime_dir}/{youtube_id}/{youtube_id}.mp4", f"{runtime_dir}/{youtube_id}/chapter-{chapter_id}.mp4", chapter_times)
 
 
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")

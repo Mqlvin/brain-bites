@@ -19,7 +19,7 @@
                 <div class="content-container">
                         <div class="intro-card">
                             <h1 class="title-text">Welcome to a brain-bite on...</h1>
-                            <h1 class="topic-text gradient-text">Atomic Bombs</h1>
+                            <h1 class="topic-text gradient-text"> {{ topic }} </h1>
                         </div>
                 </div>
 
@@ -41,13 +41,67 @@
         </div>
 
 
+
+        <!--
         <div class="chapter">
             <div style="display: flex; margin-left: auto; margin-right: auto;">
                 <div class="content-container">
+                    <!-- video -!>
+                </div>
+
+                <div class="button-holder">
+                    <div class="button up" onclick="scrollPrevious()">
+                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#bababa" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m6-8l-6-6m-6 6l6-6"/></svg>
+                    </div>
+                    <div class="button get-help" style="margin-top: auto;">
+                        <svg style="margin-left: 12px; margin-top: 14px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#FFFFFF" d="M6.29 10.3a1 1 0 0 0 1.09 1.63a1.2 1.2 0 0 0 .33-.22a1 1 0 0 0 .21-.32A.85.85 0 0 0 8 11a1 1 0 0 0-.29-.7a1 1 0 0 0-1.42 0M7 5a1 1 0 0 1 0 2a1 1 0 0 0 0 2a3 3 0 1 0-2.6-4.5a1 1 0 0 0 .37 1.37a1 1 0 0 0 1.36-.37A1 1 0 0 1 7 5m12 1h-6a1 1 0 0 0 0 2h6a1 1 0 0 1 1 1v9.72l-1.57-1.45a1 1 0 0 0-.68-.27H9a1 1 0 0 1-1-1v-1a1 1 0 0 0-2 0v1a3 3 0 0 0 3 3h8.36l3 2.73A1 1 0 0 0 21 22a1.1 1.1 0 0 0 .4-.08A1 1 0 0 0 22 21V9a3 3 0 0 0-3-3"/></svg>
+                    </div>  
+                    <div class="button exit" style="margin-top: 16px;">
+                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#bababa" d="M4 12a1 1 0 0 0 1 1h7.59l-2.3 2.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l4-4a1 1 0 0 0 .21-.33a1 1 0 0 0 0-.76a1 1 0 0 0-.21-.33l-4-4a1 1 0 1 0-1.42 1.42l2.3 2.29H5a1 1 0 0 0-1 1M17 2H7a3 3 0 0 0-3 3v3a1 1 0 0 0 2 0V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-3a1 1 0 0 0-2 0v3a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3"/></svg>
+                    </div>
+                    <div class="button get-help" onclick="scrollNext()" style="margin-top: auto;">
+                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="#ffffff" d="M16.617 3a2 2 0 0 1 1.985 1.752L18.758 6h.668a2.29 2.29 0 0 1 2.246 2.74l-.201 1.005a4.05 4.05 0 0 1-2.972 3.13a7.18 7.18 0 0 1-5.5 4.056V19h3a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2h3v-2.069a7.18 7.18 0 0 1-5.498-4.056a4.05 4.05 0 0 1-2.972-3.13l-.201-1.006A2.29 2.29 0 0 1 4.574 6h.668l.156-1.248A2 2 0 0 1 7.383 3zm2.81 5h-.42l.117.93q.075.61.05 1.203q.197-.276.294-.61l.042-.17l.2-1.006a.29.29 0 0 0-.217-.34zM4.991 8h-.418a.29.29 0 0 0-.285.347l.201 1.005c.058.289.174.553.336.78q-.025-.592.05-1.202z"/></g></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <div style="display: flex; margin-left: auto; margin-right: auto;">
+                <div class="content-container">
+                    <!-- video -!>
+                </div>
+
+                <div class="button-holder">
+                    <div class="button up" onclick="scrollPrevious()">
+                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#bababa" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m6-8l-6-6m-6 6l6-6"/></svg>
+                    </div>
+                    <div class="button get-help" style="margin-top: auto;">
+                        <svg style="margin-left: 12px; margin-top: 14px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#FFFFFF" d="M6.29 10.3a1 1 0 0 0 1.09 1.63a1.2 1.2 0 0 0 .33-.22a1 1 0 0 0 .21-.32A.85.85 0 0 0 8 11a1 1 0 0 0-.29-.7a1 1 0 0 0-1.42 0M7 5a1 1 0 0 1 0 2a1 1 0 0 0 0 2a3 3 0 1 0-2.6-4.5a1 1 0 0 0 .37 1.37a1 1 0 0 0 1.36-.37A1 1 0 0 1 7 5m12 1h-6a1 1 0 0 0 0 2h6a1 1 0 0 1 1 1v9.72l-1.57-1.45a1 1 0 0 0-.68-.27H9a1 1 0 0 1-1-1v-1a1 1 0 0 0-2 0v1a3 3 0 0 0 3 3h8.36l3 2.73A1 1 0 0 0 21 22a1.1 1.1 0 0 0 .4-.08A1 1 0 0 0 22 21V9a3 3 0 0 0-3-3"/></svg>
+                    </div>  
+                    <div class="button exit" style="margin-top: 16px;">
+                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#bababa" d="M4 12a1 1 0 0 0 1 1h7.59l-2.3 2.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l4-4a1 1 0 0 0 .21-.33a1 1 0 0 0 0-.76a1 1 0 0 0-.21-.33l-4-4a1 1 0 1 0-1.42 1.42l2.3 2.29H5a1 1 0 0 0-1 1M17 2H7a3 3 0 0 0-3 3v3a1 1 0 0 0 2 0V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-3a1 1 0 0 0-2 0v3a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3"/></svg>
+                    </div>
+                    <div class="button down" style="margin-top: auto; opacity: 0; pointer-events: none;">
+                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#bababa" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m6-6l-6 6m-6-6l6 6"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        -->
+
+
+        </div>
+
+    <script>
+        const htmlVideoElement = `
+            <div class="chapter">
+            <div style="display: flex; margin-left: auto; margin-right: auto;">
+                <div class="content-container">
                     <!-- video -->
-                    <video class="video-block" id="video-0">
-                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
-                        Browser does not supported video playback.
+                    <video class="video-block" id="video-{NUM}">
+                        <source src="./../source/7rMgpExA4kM/chapter-{NUM}.mp4" type="video/mp4">
+                        Browser does not support video playback.
                     </video>
                 </div>
 
@@ -66,44 +120,14 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
+        `;
 
-
-       <div class="chapter">
+        const endElement = `
+<div class="chapter">
             <div style="display: flex; margin-left: auto; margin-right: auto;">
                 <div class="content-container">
                     <!-- video -->
-                    <video class="video-block" id="video-1">
-                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
-                        Browser does not support video playback.
-                    </video>
-                </div>
-
-                <div class="button-holder">
-                    <div class="button up" onclick="scrollPrevious()">
-                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#bababa" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m6-8l-6-6m-6 6l6-6"/></svg>
-                    </div>
-                    <div class="button get-help" style="margin-top: auto;">
-                        <svg style="margin-left: 12px; margin-top: 14px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#FFFFFF" d="M6.29 10.3a1 1 0 0 0 1.09 1.63a1.2 1.2 0 0 0 .33-.22a1 1 0 0 0 .21-.32A.85.85 0 0 0 8 11a1 1 0 0 0-.29-.7a1 1 0 0 0-1.42 0M7 5a1 1 0 0 1 0 2a1 1 0 0 0 0 2a3 3 0 1 0-2.6-4.5a1 1 0 0 0 .37 1.37a1 1 0 0 0 1.36-.37A1 1 0 0 1 7 5m12 1h-6a1 1 0 0 0 0 2h6a1 1 0 0 1 1 1v9.72l-1.57-1.45a1 1 0 0 0-.68-.27H9a1 1 0 0 1-1-1v-1a1 1 0 0 0-2 0v1a3 3 0 0 0 3 3h8.36l3 2.73A1 1 0 0 0 21 22a1.1 1.1 0 0 0 .4-.08A1 1 0 0 0 22 21V9a3 3 0 0 0-3-3"/></svg>
-                    </div>  
-                    <div class="button exit" style="margin-top: 16px;">
-                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#bababa" d="M4 12a1 1 0 0 0 1 1h7.59l-2.3 2.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l4-4a1 1 0 0 0 .21-.33a1 1 0 0 0 0-.76a1 1 0 0 0-.21-.33l-4-4a1 1 0 1 0-1.42 1.42l2.3 2.29H5a1 1 0 0 0-1 1M17 2H7a3 3 0 0 0-3 3v3a1 1 0 0 0 2 0V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-3a1 1 0 0 0-2 0v3a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3"/></svg>
-                    </div>
-                    <div class="button quiz" onclick="scrollNext()" style="margin-top: auto;">
-                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="#ffffff" d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2m0 14a1 1 0 1 0 0 2a1 1 0 0 0 0-2m0-9.5a3.625 3.625 0 0 0-3.625 3.625a1 1 0 1 0 2 0a1.625 1.625 0 1 1 2.23 1.51c-.676.27-1.605.962-1.605 2.115V14a1 1 0 1 0 2 0c0-.244.05-.366.261-.47l.087-.04A3.626 3.626 0 0 0 12 6.5"/></g></svg>
-                    </div>
-                </div>
-            </div>
-        </div> 
-
-        <div class="chapter">
-            <div style="display: flex; margin-left: auto; margin-right: auto;">
-                <div class="content-container">
-                    <!-- video -->
-                    <video class="video-block" id="video-2">
-                        <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4">
-                        Browser does not support video playback.
-                    </video>
                 </div>
 
                 <div class="button-holder">
@@ -144,9 +168,18 @@
                     </div>
                 </div>
             </div>
-        </div> 
-
-
         </div>
+        `;
+
+        let chapters = {{ chapters }};
+        let chapterContainer = document.getElementsByClassName("scrollable-content")[0];
+
+        for(let i = 0; i < chapters; i++) {
+            console.log(htmlVideoElement.replace("{NUM}", i))
+            chapterContainer.innerHTML += htmlVideoElement.replaceAll("{NUM}", i);
+        }
+
+        chapterContainer.innerHTML += endElement;
+    </script>
     </body>
 </html>
