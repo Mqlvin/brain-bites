@@ -47,8 +47,6 @@ def unwrap_response(response_object):
     elif len(response_object.choices) > 1:
         print("[WARN] OpenAI LLM responded with too many responses, defaulting to first response")
 
-    print("RESPONSE FROM OPENAI: " + response_object.choices[0].message.content)
-
     return response_object.choices[0].message.content
     
 

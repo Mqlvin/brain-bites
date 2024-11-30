@@ -81,7 +81,6 @@ def videos(video_id):
         video_data_text = open(f"{runtime_dir}/{video_id}/associated_data.json", "r")
         video_data = json.loads(video_data_text.read())
         json_questions = video_data["quiz"];
-        print(json.dumps(json_questions))
 
         chapter_count = video_data["chapter_count"]
         return render_template("player.html", chapters = chapter_count, topic = video_data["topic"], video_id = video_id, json_questions = json_questions)
