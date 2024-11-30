@@ -180,8 +180,20 @@ class WebVTT:
             prev_key = key
 
     def get_time_of_phrase(self, start_index, end_index):
-        start_time, _ = self.get_time_of_word(start_index)
-        _, end_time = self.get_time_of_word(end_index)
+        start_times = self.get_time_of_word(start_index)
+        end_times = self.get_time_of_word(end_index)
+
+        if start_times is not None:
+            start_time = start_times[0]
+            end_time = start_times[1]
+        else:
+            # You are royally screwed
+            start_time = None
+            end_time = None
+
+        if end_times is not None:
+            end_time = end_times[1]
+        
         return start_time, end_time
 
 class WebVTTCue:
