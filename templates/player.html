@@ -187,13 +187,8 @@
         let jsonSummaryString = "{{ chapter_summary }}";
         jsonSummaryString = jsonSummaryString.replaceAll("&#39;", '"');
 
-        alert(jsonChapterString);
-        alert(jsonSummaryString);
-
         let jsonChapterQuestions = JSON.parse(jsonChapterString);
         //let jsonChapterSummaries = JSON.parse(jsonSummaryString);
-
-        alert(jsonChapterQuestions)
 
         let chapterContainer = document.getElementsByClassName("scrollable-content")[0];
 

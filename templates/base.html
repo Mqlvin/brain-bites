@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./../basestyle.css">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <ul>
+                <li>
+                    <img class="logo" src="./../logo.png" alt="BrainBites">
+                </li>
+                <li>
+                    <a href="/">Homepage</a>
+                </li>
+                <li>
+                    <a href="/videos">Browse</a>
+                </li>
+                <li>
+                    <a href="/upload">Upload video</a>
+                </li>
+            </ul>
+        </div>
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>
