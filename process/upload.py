@@ -1,4 +1,7 @@
-from api.openai_client import OpenAIModel, OpenAIWrapper, unwrap_response
+import json
+
+from api.openai_client import OpenAIModel, OpenAIWrapper, unwrap_response, summarise_to_topic, generate_questions, \
+    summarise_chapter
 from process.ffmpeg_api import trim_video
 from process.match import find_subtext
 from video.download import download_transcript
@@ -25,14 +28,19 @@ def upload_video(openai_client, runtime_dir, youtube_id):
     download_transcript(f"https://www.youtube.com/watch?v={youtube_id}", runtime_dir)
     webvtt = WebVTT(runtime_dir + f"/{youtube_id}/{youtube_id}.en.vtt")
     transcript = webvtt.get_transcript()
-
-    print(transcript)
-
     summary = summarise_transcript(openai_client, webvtt)
 
-    print(summary)
-
     # Probably gonna have an error like None has no attribute blah blah but who rlly cares
+
+    times_to_keep = []
+
+    cache_info = {"topic": "undefined", "chapter_count": 0, "chapter_explanations": [], "quiz": []}
+    cache_info["topic"] = summarise_to_topic(openai_client, transcript)
+    summary = summarise_transcript(openai_client, webvtt)
+    question_object = generate_questions(openai_client, summary)
+    cache_info["quiz"] = question_object
+    chapter_summaries = summarise_chapter(openai_client, summary)
+    cache_info["chapter_summary"] = chapter_summaries
 
     times_to_keep = []
 
@@ -48,6 +56,12 @@ def upload_video(openai_client, runtime_dir, youtube_id):
         start_time, end_time = webvtt.get_time_of_phrase(start_index, end_index)
         print(f"{line}: {start_time} --> {end_time}")
         times_to_keep[chapter].append((start_time.seconds(), end_time.seconds()))
+        cache_info["chapter_count"] = len(times_to_keep)
 
     for chapter_id, chapter_times in enumerate(times_to_keep):
-        trim_video(f"{runtime_dir}/{youtube_id}/{youtube_id}.mp4", f"{chapter_id}.mp4", chapter_times)
+        trim_video(f"{runtime_dir}/{youtube_id}/{youtube_id}.mp4",
+                   f"{runtime_dir}/{youtube_id}/chapter-{chapter_id}.mp4", chapter_times)
+
+    cache_file = open(f"{runtime_dir}/{youtube_id}/associated_data.json", "w")
+    cache_file.write(json.dumps(cache_info))
+    cache_file.close()
