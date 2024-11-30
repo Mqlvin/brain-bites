@@ -10,12 +10,16 @@ function scrollNext() {
     currentScroll += 100
     document.getElementsByClassName("chapter")[0].style.marginTop = (parseInt("-" + currentScroll.toString().toString()) + "vh");
 
-    let chapterIndex = parseInt(currentScroll / 100);
-    try {
-        if(document.getElementsByClassName("scrollable-content")[0].children[chapterIndex].children[0].children[0].children[0].tagName == "VIDEO") {
-            playVideo(chapterIndex);
-        }
-    } catch {} // doesn't matter not a video anyway
+    setTimeout(() => {
+        let videoContainersId = document.querySelectorAll("div.chapter div div video");
+
+            for(let i = 0; i < videoContainersId.length; i++) {
+                if(videoContainersId[i].getBoundingClientRect().top < document.documentElement.clientHeight && videoContainersId[i].getBoundingClientRect().top > 0) {
+                    playVideo(videoContainersId[i]);
+                    break;
+                }
+            }
+    }, 600);
 }
 
 function scrollPrevious() {
@@ -30,13 +34,16 @@ function scrollPrevious() {
     currentScroll -= 100
     document.getElementsByClassName("chapter")[0].style.marginTop = (parseInt("-" + currentScroll.toString().toString()) + "vh");
 
-    let chapterIndex = parseInt(currentScroll / 100);
-    try {
-        if(document.getElementsByClassName("scrollable-content")[0].children[chapterIndex].children[0].children[0].children[0].tagName == "VIDEO") {
-            console.log("playing video")
-            playVideo(chapterIndex);
-        }
-    } catch {} // not video anyway
+    setTimeout(() => {
+        let videoContainersId = document.querySelectorAll("div.chapter div div video");
+
+            for(let i = 0; i < videoContainersId.length; i++) {
+                if(videoContainersId[i].getBoundingClientRect().top < document.documentElement.clientHeight && videoContainersId[i].getBoundingClientRect().top > 0) {
+                    playVideo(videoContainersId[i]);
+                    break;
+                }
+            }
+    }, 600);
 }
 
 function stopVideos() {
@@ -53,10 +60,8 @@ function stopVideos() {
 
 
 
-function playVideo(chapterIndex) {
-    console.log("video-" + (chapterIndex - 1));
-    let newVideo = document.getElementById("video-" + (chapterIndex - 1));
-    newVideo.play();
+function playVideo(element) {
+    element.play();
 }
 
 

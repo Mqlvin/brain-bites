@@ -181,19 +181,15 @@
         let videoId = "{{ video_id }}";
         let chapters = Number("{{ chapters }}");
 
-        let jsonChapterString = "{{ json_questions }}";
-        jsonChapterString = jsonChapterString.replaceAll("&#39;", '"');
+        // whats going on here? i dont know. javascript doesnt either. dont touch it.
+        let jsonQuestionsString = "{{ json_questions }}";
+        jsonQuestionsString = jsonQuestionsString.replaceAll("&#39;", '"');
+        let jsonChapterQuestions = JSON.parse(jsonQuestionsString);
 
         let jsonSummaryString = "{{ chapter_summary }}";
-        jsonSummaryString = jsonSummaryString.replaceAll("&#39;", '"');
-
-        alert(jsonChapterString);
-        alert(jsonSummaryString);
-
-        let jsonChapterQuestions = JSON.parse(jsonChapterString);
-        //let jsonChapterSummaries = JSON.parse(jsonSummaryString);
-
-        alert(jsonChapterQuestions)
+        jsonSummaryString = jsonSummaryString.replaceAll("\"", "'").replaceAll("&#34;", '"');
+        let jsonSummary = JSON.parse(jsonSummaryString);
+        // you can change things after this bit though no worries
 
         let chapterContainer = document.getElementsByClassName("scrollable-content")[0];
 
