@@ -39,6 +39,53 @@
                 </div>
             </div>
         </div>
+        <!--
+        <div class="chapter">
+            <div style="display: flex; margin-left: auto; margin-right: auto;">
+                <div class="content-container">
+                        <div>
+                            <h1 class="quiz-title-text">Chapter {NUM} Quiz</h1>
+                        </div>
+                        <div>
+                            <h1 class="question-text">{QUESTION}</h1>
+                        </div>
+
+                        <div class="answer-options">
+                            <div onclick="answerQ{NUM}(0);" class="answer-option" id="c{NUM}-0">{ANSWER0}</div>
+                            <div onclick="answerQ{NUM}(1);" class="answer-option" id="c{NUM}-1">{ANSWER1}</div>
+                            <div onclick="answerQ{NUM}(2);" class="answer-option" id="c{NUM}-2">{ANSWER2}</div>
+                        </div>
+                        <script>
+                        function answerQ{NUM}(idxAnswer) {
+                            if(idxAnswer == {CORRECT_ANSWER}) {
+                                document.getElementById("c{NUM}-" + idxAnswer).style.backgroundColor = "#c6f5cb";
+                            } else {
+                                document.getElementById("c{NUM}-" + idxAnswer).style.backgroundColor = "#f5c6c6";
+                                document.getElementById("c{NUM}-" + {CORRECT_ANSWER}).style.backgroundColor = "#c6f5cb";
+                            }
+
+                            for(let i = 0; i <= 2; i++) {
+                                document.getElementById("c{NUM}-" + (i)).style.pointerEvents = "none";
+                            }
+                        }
+                        </script>
+                </div>
+
+                <div class="button-holder">
+                    <div class="button up" onclick="scrollPrevious()" style="margin-bottom: auto;">
+                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#bababa" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m6-8l-6-6m-6 6l6-6"/></svg>
+                    </div>
+                    <div class="button exit" style="margin-top: 16px;">
+                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#bababa" d="M4 12a1 1 0 0 0 1 1h7.59l-2.3 2.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l4-4a1 1 0 0 0 .21-.33a1 1 0 0 0 0-.76a1 1 0 0 0-.21-.33l-4-4a1 1 0 1 0-1.42 1.42l2.3 2.29H5a1 1 0 0 0-1 1M17 2H7a3 3 0 0 0-3 3v3a1 1 0 0 0 2 0V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-3a1 1 0 0 0-2 0v3a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3"/></svg>
+                    </div>
+                    <div class="button down" onclick="scrollNext()" style="margin-top: auto;">
+                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#bababa" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m6-6l-6 6m-6-6l6 6"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 
 
 
@@ -96,31 +143,34 @@
     <script>
         const htmlVideoElement = `
             <div class="chapter">
-            <div style="display: flex; margin-left: auto; margin-right: auto;">
-                <div class="content-container">
-                    <!-- video -->
-                    <video class="video-block" id="video-{NUM}">
-                        <source src="./../source/7rMgpExA4kM/chapter-{NUM}.mp4" type="video/mp4">
-                        Browser does not support video playback.
-                    </video>
-                </div>
-
-                <div class="button-holder">
-                    <div class="button up" onclick="scrollPrevious()">
-                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#bababa" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m6-8l-6-6m-6 6l6-6"/></svg>
+                <div style="display: flex; margin-left: auto; margin-right: auto;">
+                    <div class="content-container">
+                        <!-- video -->
+                        <video class="video-block" id="video-{NUM}">
+                            <source src="./../source/7rMgpExA4kM/chapter-{NUM}.mp4" type="video/mp4">
+                            Browser does not support video playback.
+                        </video>
                     </div>
-                    <div class="button get-help" style="margin-top: auto;">
-                        <svg style="margin-left: 12px; margin-top: 14px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#FFFFFF" d="M6.29 10.3a1 1 0 0 0 1.09 1.63a1.2 1.2 0 0 0 .33-.22a1 1 0 0 0 .21-.32A.85.85 0 0 0 8 11a1 1 0 0 0-.29-.7a1 1 0 0 0-1.42 0M7 5a1 1 0 0 1 0 2a1 1 0 0 0 0 2a3 3 0 1 0-2.6-4.5a1 1 0 0 0 .37 1.37a1 1 0 0 0 1.36-.37A1 1 0 0 1 7 5m12 1h-6a1 1 0 0 0 0 2h6a1 1 0 0 1 1 1v9.72l-1.57-1.45a1 1 0 0 0-.68-.27H9a1 1 0 0 1-1-1v-1a1 1 0 0 0-2 0v1a3 3 0 0 0 3 3h8.36l3 2.73A1 1 0 0 0 21 22a1.1 1.1 0 0 0 .4-.08A1 1 0 0 0 22 21V9a3 3 0 0 0-3-3"/></svg>
-                    </div>  
-                    <div class="button exit" style="margin-top: 16px;">
-                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#bababa" d="M4 12a1 1 0 0 0 1 1h7.59l-2.3 2.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l4-4a1 1 0 0 0 .21-.33a1 1 0 0 0 0-.76a1 1 0 0 0-.21-.33l-4-4a1 1 0 1 0-1.42 1.42l2.3 2.29H5a1 1 0 0 0-1 1M17 2H7a3 3 0 0 0-3 3v3a1 1 0 0 0 2 0V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-3a1 1 0 0 0-2 0v3a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3"/></svg>
-                    </div>
-                    <div class="button down" onclick="scrollNext()" style="margin-top: auto;">
-                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#bababa" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m6-6l-6 6m-6-6l6 6"/></svg>
+    
+                    <div class="button-holder">
+                        <div class="button up" onclick="scrollPrevious()">
+                            <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#bababa" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m6-8l-6-6m-6 6l6-6"/></svg>
+                        </div>
+                        <div class="button get-help" style="margin-top: auto;">
+                            <svg style="margin-left: 12px; margin-top: 14px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#FFFFFF" d="M6.29 10.3a1 1 0 0 0 1.09 1.63a1.2 1.2 0 0 0 .33-.22a1 1 0 0 0 .21-.32A.85.85 0 0 0 8 11a1 1 0 0 0-.29-.7a1 1 0 0 0-1.42 0M7 5a1 1 0 0 1 0 2a1 1 0 0 0 0 2a3 3 0 1 0-2.6-4.5a1 1 0 0 0 .37 1.37a1 1 0 0 0 1.36-.37A1 1 0 0 1 7 5m12 1h-6a1 1 0 0 0 0 2h6a1 1 0 0 1 1 1v9.72l-1.57-1.45a1 1 0 0 0-.68-.27H9a1 1 0 0 1-1-1v-1a1 1 0 0 0-2 0v1a3 3 0 0 0 3 3h8.36l3 2.73A1 1 0 0 0 21 22a1.1 1.1 0 0 0 .4-.08A1 1 0 0 0 22 21V9a3 3 0 0 0-3-3"/></svg>
+                        </div>  
+                        <div class="button exit" style="margin-top: 16px;">
+                            <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#bababa" d="M4 12a1 1 0 0 0 1 1h7.59l-2.3 2.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l4-4a1 1 0 0 0 .21-.33a1 1 0 0 0 0-.76a1 1 0 0 0-.21-.33l-4-4a1 1 0 1 0-1.42 1.42l2.3 2.29H5a1 1 0 0 0-1 1M17 2H7a3 3 0 0 0-3 3v3a1 1 0 0 0 2 0V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-3a1 1 0 0 0-2 0v3a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3"/></svg>
+                        </div>
+                        <div class="button down" onclick="scrollNext()" style="margin-top: auto;">
+                            <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#bababa" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m6-6l-6 6m-6-6l6 6"/></svg>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+
+            <!-- chapter quiz here -->
         `;
 
         const endElement = `
@@ -171,12 +221,78 @@
         </div>
         `;
 
+        const htmlQuestionElement = `
+        <div class="chapter">
+            <div style="display: flex; margin-left: auto; margin-right: auto;">
+                <div class="content-container">
+                        <div>
+                            <h1 class="quiz-title-text">Chapter {NUM} Quiz</h1>
+                        </div>
+                        <div>
+                            <h1 class="question-text">{QUESTION}</h1>
+                        </div>
+
+                        <div class="answer-options">
+                            <div onclick="answerQ{NUM}(0);" class="answer-option" id="c{NUM}-0">{ANSWER0}</div>
+                            <div onclick="answerQ{NUM}(1);" class="answer-option" id="c{NUM}-1">{ANSWER1}</div>
+                            <div onclick="answerQ{NUM}(2);" class="answer-option" id="c{NUM}-2">{ANSWER2}</div>
+                        </div>
+                </div>
+
+                <div class="button-holder">
+                    <div class="button up" onclick="scrollPrevious()" style="margin-bottom: auto;">
+                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#bababa" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m6-8l-6-6m-6 6l6-6"/></svg>
+                    </div>
+                    <div class="button exit" style="margin-top: 16px;">
+                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#bababa" d="M4 12a1 1 0 0 0 1 1h7.59l-2.3 2.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l4-4a1 1 0 0 0 .21-.33a1 1 0 0 0 0-.76a1 1 0 0 0-.21-.33l-4-4a1 1 0 1 0-1.42 1.42l2.3 2.29H5a1 1 0 0 0-1 1M17 2H7a3 3 0 0 0-3 3v3a1 1 0 0 0 2 0V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-3a1 1 0 0 0-2 0v3a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3"/></svg>
+                    </div>
+                    <div class="button down" onclick="scrollNext()" style="margin-top: auto;">
+                        <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#bababa" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m6-6l-6 6m-6-6l6 6"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+
+        const jsQuestionScript = `
+                        function answerQ{NUM}(idxAnswer) {
+                            if(idxAnswer == {CORRECT_ANSWER}) {
+                                document.getElementById("c{NUM}-" + idxAnswer).style.backgroundColor = "#c6f5cb";
+                            } else {
+                                document.getElementById("c{NUM}-" + idxAnswer).style.backgroundColor = "#f5c6c6";
+                                document.getElementById("c{NUM}-" + {CORRECT_ANSWER}).style.backgroundColor = "#c6f5cb";
+                            }
+
+                            for(let i = 0; i <= 2; i++) {
+                                document.getElementById("c{NUM}-" + (i)).style.pointerEvents = "none";
+                                console.log(document.getElementById("c{NUM}-" + (i)))
+                            }
+                        }
+        `;
+
+
+        let videoId = "{{ video_id }}";
         let chapters = {{ chapters }};
+        let jsonChapterQuestions = JSON.parse("{{ json_questions }}".replaceAll("&#39;", "\""));
+
         let chapterContainer = document.getElementsByClassName("scrollable-content")[0];
 
+        
         for(let i = 0; i < chapters; i++) {
             console.log(htmlVideoElement.replace("{NUM}", i))
             chapterContainer.innerHTML += htmlVideoElement.replaceAll("{NUM}", i);
+
+            chapterContainer.innerHTML += htmlQuestionElement
+                .replaceAll("{NUM}", i+1)
+                .replaceAll("{QUESTION}", jsonChapterQuestions[i].question)
+                .replace("{ANSWER0}", jsonChapterQuestions[i].answer[0])
+                .replace("{ANSWER1}", jsonChapterQuestions[i].answer[1])
+                .replace("{ANSWER2}", jsonChapterQuestions[i].answer[2]);
+            let scriptElement = document.createElement("script");
+            scriptElement.textContent = jsQuestionScript
+                .replaceAll("{CORRECT_ANSWER}", jsonChapterQuestions[i].correctAnswer)
+                .replaceAll("{NUM}", i+1)
+            chapterContainer.appendChild(scriptElement);
         }
 
         chapterContainer.innerHTML += endElement;
