@@ -95,6 +95,21 @@ def summarise_to_topic(client, transcript):
     return unwrap_response(chat_completion)[len("Here is a brain bite on "):].replace(".", "")
 
 
+# Returns an overall summary of the current chapter
+def summarise_chapter(client, transcript):
+    chat_completion = client.get_client().chat.completions.create(
+        model = client.get_active_model(),
+        messages=[
+            {"role": "system",
+             "content": '''Summarise each chapter in the given transcript to help people understand the transcript better. Do it in a JSON list for each chapter, in the format ["summary1", "summary2",...]:\n'''},
+            {"role": "user",
+             "content": transcript}
+        ]
+    )
+
+    return unwrap_response(chat_completion)
+
+
 # returns a json object with chapter questions in format:
 """
 [
