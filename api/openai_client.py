@@ -47,6 +47,8 @@ def unwrap_response(response_object):
     elif len(response_object.choices) > 1:
         print("[WARN] OpenAI LLM responded with too many responses, defaulting to first response")
 
+    print("RESPONSE FROM OPENAI: " + response_object.choices[0].message.content)
+
     return response_object.choices[0].message.content
     
 
@@ -93,3 +95,47 @@ def summarise_to_topic(client, transcript):
     )
 
     return unwrap_response(chat_completion)[len("Here is a brain bite on "):].replace(".", "")
+
+
+# returns a json object with chapter questions in format:
+"""
+[
+  {
+    "question": "What happens in the final assembly line in Chapter 4?",
+    "answer": [
+      "Components like wings, landing gear, and engines are installed",
+      "The aircraft is painted",
+      "The plane is tested for speed",
+      "correctAnswer": 0
+    ]
+  },
+  {
+    "question": "What did the author learn from their visit to Airbus in Chapter 5?",
+    "answer": [
+      "The complexity of airplane manufacturing",
+      "How to design an aircraft",
+      "How to fly an A350",
+      "correctAnswer": 0
+    ]
+  }
+]
+"""
+def generate_questions(client, shortened_transcript):
+    chat_completion = client.get_client().chat.completions.create(
+        model=client.get_active_model(),
+        messages=[
+            {"role": "system",
+             "content": 'Take the following text, and for each chapter write a question and a VERY SHORT list of THREE multiple choice answers. For each question and answer format it in json please, in the format of a list, with objects {"question":QUESTION_HERE, "answer":["answer1", "answer2"], "correctAnswer":index}'},
+            {"role": "user",
+             "content": shortened_transcript}
+        ]
+    )
+
+    response = unwrap_response(chat_completion)
+    if response.startswith("```json"):
+        response = response[7:]
+    if response.endswith("```"):
+        response = response[:(len(response) - 3)]
+    print(response)
+
+    return json.loads(response)

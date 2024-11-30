@@ -2,11 +2,13 @@ import json
 import os
 from threading import Thread
 
+import openai
 from dotenv import load_dotenv
 from flask import Flask, redirect, render_template, send_file
+from werkzeug.utils import environ_property
 
-from api.openai_client import (OpenAIModel, OpenAIWrapper, summarise_to_topic,
-                               summarise_transcript)
+from api.openai_client import (OpenAIModel, OpenAIWrapper, generate_questions,
+                               summarise_to_topic, summarise_transcript)
 from flask_app.config import Config
 from flask_app.forms import UploadForm
 from process.ffmpeg_api import trim_video
@@ -78,9 +80,11 @@ def videos(video_id):
     else:
         video_data_text = open(f"{runtime_dir}/{video_id}/associated_data.json", "r")
         video_data = json.loads(video_data_text.read())
+        json_questions = video_data["quiz"];
+        print(json.dumps(json_questions))
 
         chapter_count = video_data["chapter_count"]
-        return render_template("player.html", chapters = chapter_count, topic = video_data["topic"])
+        return render_template("player.html", chapters = chapter_count, topic = video_data["topic"], video_id = video_id, json_questions = json_questions)
 
 @app.route("/source/<video_id>/<_>.mp4")
 def source(video_id, _):
@@ -110,7 +114,7 @@ def main():
     youtube_id = "7rMgpExA4kM"
     if not os.path.isdir(f"{runtime_dir}/{youtube_id}"):
 
-        cache_info = {"topic":"undefined", "chapter_count":0, "chapter_explanations":[]}
+        cache_info = {"topic":"undefined", "chapter_count":0, "chapter_explanations":[], "quiz":[]}
 
         # Singleton openai client, I'm sticking to gpt 4o mini for testing
         openai_client = OpenAIWrapper(os.getenv("OPENAI_KEY"), OpenAIModel.GPT_4O_MINI)
@@ -122,6 +126,8 @@ def main():
         # print(transcript)
         cache_info["topic"] = summarise_to_topic(openai_client, transcript)
         summary = summarise_transcript(openai_client, webvtt)
+        question_object = generate_questions(openai_client, summary)
+        cache_info["quiz"] = question_object
         # Probably gonna have an error like None has no attribute blah blah but who rlly cares
         times_to_keep = []
 
