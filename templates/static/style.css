@@ -120,11 +120,64 @@ body {
     margin-bottom: auto;
     text-shadow: 0px 0px 5px rgba(255,255,255,0.20);
 
-    font-size: 5em;
+    font-size: 3.8em;
+    white-space: nowrap;
 }
 
 .gradient-text {
     color: transparent;
     background-image: linear-gradient(150deg, rgba(128,237,153,1) 10%, rgba(56,163,165,1) 100%) !important;
     background-clip: text;
+}
+
+
+.quiz-title-text {
+    color: rgb(80, 80, 80);
+    text-align: center;
+    text-shadow: 0px 0px 4px rgba(0,0,0,0.20);
+
+    font-size: 2em;
+    margin-top: 10%;
+}
+
+.answer-options {
+    width: 60%;
+    height: 160px;
+
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+}
+
+.answer-option {
+    border-radius: 100px;
+    height: 50px;
+    margin-bottom: 7px;
+
+    background-color: #FFFFFF;
+    box-shadow: 0px 6px 12px -4px rgba(0,0,0,0.15);
+
+    transition: 0.2s;
+
+    text-align: center;
+    text-shadow: 0px 0px 4px rgba(0,0,0,0.20);
+    line-height: 50px;
+
+    user-select: none;
+}
+
+.answer-option:hover {
+    background-color: #F0F0F0;
+    box-shadow: 0px 6px 16px -4px rgba(0,0,0,0.25);
+
+    cursor: pointer;
+}
+
+.question-text {
+    color: rgb(50, 50, 50);
+    text-align: center;
+    text-shadow: 0px 0px 4px rgba(0,0,0,0.15);
+
+    font-size: 1.2em;
+    margin-top: 20px;
 }

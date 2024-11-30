@@ -1,6 +1,8 @@
-from enum import Enum
-from openai import OpenAI
 import json
+from enum import Enum
+
+from openai import OpenAI
+
 
 class OpenAIModel(Enum):
     GPT_4O = 0
@@ -60,3 +62,93 @@ chat_completion = client.get_client().chat.completions.create(
 
 print(unwrap_response(chat_completion))
 """
+
+
+# returns a summarised transcript
+def summarise_transcript(client, transcript):
+    chat_completion = client.get_client().chat.completions.create(
+        model=client.get_active_model(),
+        messages=[
+            {"role": "system",
+             "content": "You are designed to summarise educational transcripts. But you MUST still use their wording. Give me each summarised sentence on a different, and split into chapters of about five sentences long, titled as <Chapter 1>, <Chapter 2> and so on."},
+            {"role": "user",
+             "content": transcript.get_transcript()}
+        ]
+    )
+
+    return unwrap_response(chat_completion)
+
+
+
+# returns the topic of the video
+def summarise_to_topic(client, transcript):
+    chat_completion = client.get_client().chat.completions.create(
+        model=client.get_active_model(),
+        messages=[
+            {"role": "system",
+             "content": "Name this video, based on the transcript I give you. Finish the sentence 'Here is a brain bite on'...Just reply in 1-4 words"},
+            {"role": "user",
+             "content": transcript}
+        ]
+    )
+
+    return unwrap_response(chat_completion)[len("Here is a brain bite on "):].replace(".", "")
+
+
+# Returns an overall summary of the current chapter
+def summarise_chapter(client, transcript):
+    chat_completion = client.get_client().chat.completions.create(
+        model = client.get_active_model(),
+        messages=[
+            {"role": "system",
+             "content": '''Summarise each chapter in the given transcript to help people understand the transcript better. Do it in a JSON list for each chapter, in the format ["summary1", "summary2",...]:\n'''},
+            {"role": "user",
+             "content": transcript}
+        ]
+    )
+
+    return unwrap_response(chat_completion)
+
+
+# returns a json object with chapter questions in format:
+"""
+[
+  {
+    "question": "What happens in the final assembly line in Chapter 4?",
+    "answer": [
+      "Components like wings, landing gear, and engines are installed",
+      "The aircraft is painted",
+      "The plane is tested for speed",
+      "correctAnswer": 0
+    ]
+  },
+  {
+    "question": "What did the author learn from their visit to Airbus in Chapter 5?",
+    "answer": [
+      "The complexity of airplane manufacturing",
+      "How to design an aircraft",
+      "How to fly an A350",
+      "correctAnswer": 0
+    ]
+  }
+]
+"""
+def generate_questions(client, shortened_transcript):
+    chat_completion = client.get_client().chat.completions.create(
+        model=client.get_active_model(),
+        messages=[
+            {"role": "system",
+             "content": 'Take the following text, and for each chapter write a question and a VERY SHORT list of THREE multiple choice answers. For each question and answer format it in json please, in the format of a list, with objects {"question":QUESTION_HERE, "answer":["answer1", "answer2"], "correctAnswer":index}'},
+            {"role": "user",
+             "content": shortened_transcript}
+        ]
+    )
+
+    response = unwrap_response(chat_completion)
+    if response.startswith("```json"):
+        response = response[7:]
+    if response.endswith("```"):
+        response = response[:(len(response) - 3)]
+    print(response)
+
+    return json.loads(response)
