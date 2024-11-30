@@ -39,6 +39,7 @@
                 </div>
             </div>
         </div>
+        
         <!--
         <div class="chapter">
             <div style="display: flex; margin-left: auto; margin-right: auto;">
@@ -138,7 +139,7 @@
         -->
 
 
-        </div>
+    </div>
 
     <script>
         const htmlVideoElement = `
@@ -254,6 +255,13 @@
         </div>
         `;
 
+        const htmlHelpElement = `
+        <div class="help-box">
+                <div class="help-title">Additional help</div>
+                <div class="help-text"> the final chapter, the narrator expresses gratitude to Airbus for the opportunity to tour their facilities and learn about airplane production. He reflects on the impressive scale of the Airbus A350. The chapter ends on a light-hearted note, with a humorous suggestion for how to purchase an A350, highlighting his engaging experience.</div>
+        </div>
+        `;
+
         const jsQuestionScript = `
                         function answerQ{NUM}(idxAnswer) {
                             if(idxAnswer == {CORRECT_ANSWER}) {
@@ -269,17 +277,18 @@
                             }
                         }
         `;
+        
 
 
         let videoId = "{{ video_id }}";
         let chapters = {{ chapters }};
-        let jsonChapterQuestions = JSON.parse("{{ json_questions }}".replaceAll("&#39;", "\""));
+        let jsonChapterQuestions = HERE_YOU_GO;
+        let jsonChapterSummaries = HERE_YOU_GO;
 
         let chapterContainer = document.getElementsByClassName("scrollable-content")[0];
 
         
         for(let i = 0; i < chapters; i++) {
-            console.log(htmlVideoElement.replace("{NUM}", i))
             chapterContainer.innerHTML += htmlVideoElement.replaceAll("{NUM}", i);
 
             chapterContainer.innerHTML += htmlQuestionElement

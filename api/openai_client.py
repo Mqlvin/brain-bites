@@ -101,13 +101,19 @@ def summarise_chapter(client, transcript):
         model = client.get_active_model(),
         messages=[
             {"role": "system",
-             "content": '''Summarise each chapter in the given transcript to help people understand the transcript better. Do it in a JSON list for each chapter, in the format ["summary1", "summary2",...]:\n'''},
+             "content": '''Explain each chapter in the given transcript in detail to help people understand the transcript better, keep it to maybe 10 sentences or less. Do it in a JSON list for each chapter, in the format (with the double quotes only) ["summary1", "summary2",...]'''},
             {"role": "user",
              "content": transcript}
         ]
     )
 
-    return unwrap_response(chat_completion)
+    response = unwrap_response(chat_completion)
+    if response.startswith("```json"):
+        response = response[7:]
+    if response.endswith("```"):
+        response = response[:(len(response) - 3)]
+
+    return json.loads(response)
 
 
 # returns a json object with chapter questions in format:
@@ -138,7 +144,7 @@ def generate_questions(client, shortened_transcript):
         model=client.get_active_model(),
         messages=[
             {"role": "system",
-             "content": 'Take the following text, and for each chapter write a question and a VERY SHORT list of THREE multiple choice answers. For each question and answer format it in json please, in the format of a list, with objects {"question":QUESTION_HERE, "answer":["answer1", "answer2"], "correctAnswer":index}'},
+             "content": 'Take the following text, and for each chapter write a question and a VERY SHORT list of THREE multiple choice answers. For each question and answer format it in json please, in the format of a list, with objects using double quotes {"question":QUESTION_HERE, "answer":["answer1", "answer2"], "correctAnswer":index}'},
             {"role": "user",
              "content": shortened_transcript}
         ]
@@ -149,6 +155,5 @@ def generate_questions(client, shortened_transcript):
         response = response[7:]
     if response.endswith("```"):
         response = response[:(len(response) - 3)]
-    print(response)
 
     return json.loads(response)

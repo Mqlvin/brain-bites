@@ -8,7 +8,8 @@ from flask import Flask, redirect, render_template, send_file
 from werkzeug.utils import environ_property
 
 from api.openai_client import (OpenAIModel, OpenAIWrapper, generate_questions,
-                               summarise_to_topic, summarise_transcript)
+                               summarise_chapter, summarise_to_topic,
+                               summarise_transcript)
 from flask_app.config import Config
 from flask_app.forms import UploadForm
 from process.ffmpeg_api import trim_video
@@ -74,10 +75,11 @@ def videos(video_id):
     else:
         video_data_text = open(f"{runtime_dir}/{video_id}/associated_data.json", "r")
         video_data = json.loads(video_data_text.read())
-        json_questions = video_data["quiz"];
+        json_questions = video_data["quiz"] # once i accidentally added a semicolon here sorry for not being pythonic
+        chapter_summary = video_data["chapter_summary"]
 
         chapter_count = video_data["chapter_count"]
-        return render_template("player.html", chapters = chapter_count, topic = video_data["topic"], video_id = video_id, json_questions = json_questions)
+        return render_template("player.html", chapters = chapter_count, topic = video_data["topic"], video_id = video_id, json_questions = json_questions, chapter_summary = chapter_summary)
 
 @app.route("/source/<video_id>/<_>.mp4")
 def source(video_id, _):
@@ -121,6 +123,8 @@ def main():
         summary = summarise_transcript(openai_client, webvtt)
         question_object = generate_questions(openai_client, summary)
         cache_info["quiz"] = question_object
+        chapter_summaries = summarise_chapter(openai_client, summary)
+        cache_info["chapter_summary"] = chapter_summaries
         # Probably gonna have an error like None has no attribute blah blah but who rlly cares
         times_to_keep = []
 

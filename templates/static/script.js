@@ -13,7 +13,6 @@ function scrollNext() {
     let chapterIndex = parseInt(currentScroll / 100);
     try {
         if(document.getElementsByClassName("scrollable-content")[0].children[chapterIndex].children[0].children[0].children[0].tagName == "VIDEO") {
-            console.log("playing video")
             playVideo(chapterIndex);
         }
     } catch {} // doesn't matter not a video anyway
@@ -58,4 +57,22 @@ function playVideo(chapterIndex) {
     console.log("video-" + (chapterIndex - 1));
     let newVideo = document.getElementById("video-" + (chapterIndex - 1));
     newVideo.play();
+}
+
+
+
+
+function toggleHelp() {
+    if(document.getElementById("help-box") == undefined) {
+        showHelp();
+    } else {
+        hideHelp();
+    }
+}
+
+
+function showHelp() {
+}
+
+function hideHelp() {
 }

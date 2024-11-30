@@ -181,3 +181,31 @@ body {
     font-size: 1.2em;
     margin-top: 20px;
 }
+
+.help-box {
+    background-color: #DEDEDE;
+    box-shadow: 0px 8px 22px 0px rgba(0,0,0,0.25);
+    color: rgb(60, 60, 60);
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 250px;
+    padding: 30px;
+
+    border-radius: 10px;
+    border: 1px solid #DEDEDE;
+    text-shadow: 0px 0px 4px rgba(0,0,0,0.10);
+}
+
+.help-title {
+    text-align: center;
+
+    font-size: 1.4em;
+    font-weight: 600;
+    margin-bottom: 20px;
+
+    color: rgb(50, 50, 50);
+    text-shadow: 0px 0px 4px rgba(0,0,0,0.25);
+}
