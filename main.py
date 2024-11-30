@@ -20,30 +20,6 @@ from video.webvtt import WebVTT, WebVTTUtil
 runtime_dir = ""
 openai_client = None
 app = Flask(__name__, static_url_path='', static_folder="./templates/static")
-
-# loads and handles init of environment variables
-def init_env():
-    global runtime_dir
-    # Loads the dotenv file
-    load_dotenv()
-
-    # Handle dotenv inputs
-    openai_key = os.getenv("OPENAI_KEY")
-    if not openai_key:
-        print("[ERROR] No OpenAI key provided. Check https://github.com/Mqlvin/brain-bites/ for usage instructions.")
-        exit(1)
-
-    runtime_dir = os.getenv("RUNTIME_DIR", "./runtime")
-    # make the directory
-    try:
-        os.makedirs(runtime_dir, exist_ok=True)
-    except:
-        print("[ERROR] Failed to make runtime directory")
-
-
-
-  
-  
   
 
 def init_env():
@@ -64,7 +40,25 @@ def init_env():
     except:
         print("[ERROR] Failed to make runtime directory")
 
-      
+
+# Loads and handles the initialisation of environment variables
+def init_env():
+    global runtime_dir
+    # Loads the dotenv file
+    load_dotenv()
+
+    # Handle dotenv inputs
+    openai_key = os.getenv("OPENAI_KEY")
+    if not openai_key:
+        print("[ERROR] No OpenAI key provided. Check https://github.com/Mqlvin/brain-bites/ for usage instructions.")
+        exit(1)
+
+    runtime_dir = os.getenv("RUNTIME_DIR", "./runtime")
+    # make the directory
+    try:
+        os.makedirs(runtime_dir, exist_ok=True)
+    except:
+        print("[ERROR] Failed to make runtime directory")
 
 
 @app.route("/")
