@@ -6,19 +6,18 @@ from threading import Thread
 import openai
 from dotenv import load_dotenv
 from flask import Flask, redirect, render_template, send_file
-from werkzeug.utils import environ_property
 
 from api.openai_client import (OpenAIModel, OpenAIWrapper, generate_questions,
                                summarise_chapter, summarise_to_topic,
                                summarise_transcript)
 from flask_app.config import Config
 from flask_app.forms import UploadForm
+from flask_app.icons import Color, Icon
 from process.ffmpeg_api import trim_video
 from process.match import find_subtext
 from process.upload import get_youtube_id, upload_video
 from video.download import download_transcript
 from video.webvtt import WebVTT, WebVTTUtil
-from flask_app.icons import Icon, Color
 
 runtime_dir = ""
 openai_client = None
@@ -71,7 +70,6 @@ def browse():
         Icon("Computer Science", random_color(unchosen_colors), "/"),
         Icon("Maths", random_color(unchosen_colors), "/"),
     ]
-    print(icons[0].get_background())
     return render("browse.html", icons=icons)
 
 @app.route("/videos/<video_id>")

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="grid-container">
   {% for icon in icons %}
-    <div class="grid-item" style="background: {{ icon.get_background() }};">
+  <div class="grid-item" style="background: linear-gradient({{  icon.get_color_rotation() }}deg, {{ icon.get_background() }}, {{ icon.get_background2() }});">
       <a href="{{ icon.get_link() }}">{{ icon.get_text() }}</a>
     </div>
   {% endfor %}
