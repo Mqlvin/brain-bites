@@ -86,7 +86,7 @@ def videos(video_id):
         chapter_summary = video_data["chapter_summary"]
         chapter_count = video_data["chapter_count"]
 
-        return render_template("player.html", chapters=chapter_count, topic=video_data["topic"], video_id=video_id, json_questions=json_questions, chapter_summary=chapter_summary)
+        return render_template("player.html", chapters=chapter_count, topic=video_data["topic"], video_id=video_id, json_questions=json_questions, chapter_summary=json.dumps(chapter_summary))
 
 @app.route("/source/<video_id>/<_>.mp4")
 def source(video_id, _):

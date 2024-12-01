@@ -24,12 +24,9 @@
                 </div>
 
                 <div class="button-holder">
-                    <div class="button up" style="opacity: 0; pointer-events: none;">
+                    <div class="button up" style="opacity: 0; pointer-events: none; margin-bottom: auto;">
                         <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#bababa" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m6-8l-6-6m-6 6l6-6"/></svg>
                     </div>
-                    <div class="button get-help" style="margin-top: auto;">
-                        <svg style="margin-left: 12px; margin-top: 14px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#FFFFFF" d="M6.29 10.3a1 1 0 0 0 1.09 1.63a1.2 1.2 0 0 0 .33-.22a1 1 0 0 0 .21-.32A.85.85 0 0 0 8 11a1 1 0 0 0-.29-.7a1 1 0 0 0-1.42 0M7 5a1 1 0 0 1 0 2a1 1 0 0 0 0 2a3 3 0 1 0-2.6-4.5a1 1 0 0 0 .37 1.37a1 1 0 0 0 1.36-.37A1 1 0 0 1 7 5m12 1h-6a1 1 0 0 0 0 2h6a1 1 0 0 1 1 1v9.72l-1.57-1.45a1 1 0 0 0-.68-.27H9a1 1 0 0 1-1-1v-1a1 1 0 0 0-2 0v1a3 3 0 0 0 3 3h8.36l3 2.73A1 1 0 0 0 21 22a1.1 1.1 0 0 0 .4-.08A1 1 0 0 0 22 21V9a3 3 0 0 0-3-3"/></svg>
-                    </div>  
                     <div class="button exit" style="margin-top: 16px;">
                         <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#bababa" d="M4 12a1 1 0 0 0 1 1h7.59l-2.3 2.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l4-4a1 1 0 0 0 .21-.33a1 1 0 0 0 0-.76a1 1 0 0 0-.21-.33l-4-4a1 1 0 1 0-1.42 1.42l2.3 2.29H5a1 1 0 0 0-1 1M17 2H7a3 3 0 0 0-3 3v3a1 1 0 0 0 2 0V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-3a1 1 0 0 0-2 0v3a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3"/></svg>
                     </div>
@@ -57,7 +54,7 @@
                         <div class="button up" onclick="scrollPrevious()">
                             <svg style="margin-left: 15px; margin-top: 15px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#bababa" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m6-8l-6-6m-6 6l6-6"/></svg>
                         </div>
-                        <div class="button get-help" style="margin-top: auto;">
+                        <div class="button get-help" onclick="toggleHelp({NUM})" style="margin-top: auto;">
                             <svg style="margin-left: 12px; margin-top: 14px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#FFFFFF" d="M6.29 10.3a1 1 0 0 0 1.09 1.63a1.2 1.2 0 0 0 .33-.22a1 1 0 0 0 .21-.32A.85.85 0 0 0 8 11a1 1 0 0 0-.29-.7a1 1 0 0 0-1.42 0M7 5a1 1 0 0 1 0 2a1 1 0 0 0 0 2a3 3 0 1 0-2.6-4.5a1 1 0 0 0 .37 1.37a1 1 0 0 0 1.36-.37A1 1 0 0 1 7 5m12 1h-6a1 1 0 0 0 0 2h6a1 1 0 0 1 1 1v9.72l-1.57-1.45a1 1 0 0 0-.68-.27H9a1 1 0 0 1-1-1v-1a1 1 0 0 0-2 0v1a3 3 0 0 0 3 3h8.36l3 2.73A1 1 0 0 0 21 22a1.1 1.1 0 0 0 .4-.08A1 1 0 0 0 22 21V9a3 3 0 0 0-3-3"/></svg>
                         </div>  
                         <div class="button exit" style="margin-top: 16px;">
@@ -156,10 +153,8 @@
         `;
 
         const htmlHelpElement = `
-        <div class="help-box">
                 <div class="help-title">Additional help</div>
-                <div class="help-text"> the final chapter, the narrator expresses gratitude to Airbus for the opportunity to tour their facilities and learn about airplane production. He reflects on the impressive scale of the Airbus A350. The chapter ends on a light-hearted note, with a humorous suggestion for how to purchase an A350, highlighting his engaging experience.</div>
-        </div>
+                <div class="help-text">{TEXT}</div>
         `;
 
         const jsQuestionScript = `
@@ -181,14 +176,15 @@
         let videoId = "{{ video_id }}";
         let chapters = Number("{{ chapters }}");
 
-        let jsonChapterString = "{{ json_questions }}";
-        jsonChapterString = jsonChapterString.replaceAll("&#39;", '"');
+        // whats going on here? i dont know. javascript doesnt either. dont touch it.
+        let jsonQuestionsString = "{{ json_questions }}";
+        jsonQuestionsString = jsonQuestionsString.replaceAll("&#39;", '"');
+        let jsonChapterQuestions = JSON.parse(jsonQuestionsString);
 
         let jsonSummaryString = "{{ chapter_summary }}";
-        jsonSummaryString = jsonSummaryString.replaceAll("&#39;", '"');
-
-        let jsonChapterQuestions = JSON.parse(jsonChapterString);
-        //let jsonChapterSummaries = JSON.parse(jsonSummaryString);
+        jsonSummaryString = jsonSummaryString.replaceAll("\"", "'").replaceAll("&#34;", '"');
+        let jsonSummary = JSON.parse(jsonSummaryString);
+        // you can change things after this bit though no worries
 
         let chapterContainer = document.getElementsByClassName("scrollable-content")[0];
 
