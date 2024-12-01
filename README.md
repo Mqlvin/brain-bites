@@ -1,5 +1,6 @@
 # Brain Bites
-
+![brain-bites](res/logo.png)
+<br>
 Shorten long documentaries 📽️ into short, education-packed videos ⚡.
 <br>
 
