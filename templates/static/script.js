@@ -120,3 +120,12 @@ document.addEventListener("mousemove", (e) => {
         helpBoxElement.style.left = (mx + 5) + "px";
     }
 });
+
+
+let score = 0;
+function incrementScore() {
+    score++;
+    let scoreText = document.getElementById("final-text");
+    scoreText.innerHTML = "You scored " + score.toString() + " of 5 on the quiz!<br>Keep going for gold! 🥇";
+
+}
